@@ -4,7 +4,9 @@
   "description": "Pre-assignment Developer 2",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "bundle": "node scripts/bundle.js"
     },
   "keywords": [
     "finnair",

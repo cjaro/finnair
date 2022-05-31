@@ -32,31 +32,74 @@ app.get("/", (req, res) => {
   res.send("Hello world! 🚀");
 });
 
-app.get("/passengers", async (req, res, next) => {
-  console.log("Fetching passengers 👥");
+app.get("/passengers/", async (req, res, next) => {
+  console.log(`Fetching passengers on flight ${req.query.flightNumber} 👥`);
 
-  let table = "passengers";
-  let query = `SELECT * FROM ${table}`;
+  let passInFlightNum = req.query.flightNumber;
+
+  let query = `
+  SELECT 
+    passengers.id,
+    passengers.firstname,
+    passengers.lastname, 
+	  f.bookingId
+  FROM passengers
+  JOIN flights f ON f.id = passengers."flightId"
+  WHERE f.flightnumber = '${passInFlightNum}';`
+
   let passengers = await getInfo(query);
 
-  res.send(passengers.rows);
+  let response = []
+
+  for (var i = 0; i < passengers.rows.length; i++) {
+    const passenger = {};
+
+    passenger.passengerId = passengers.rows[i].id;
+    passenger.firstName = capitalizeFirstLetter(passengers.rows[i].firstname);
+    passenger.lastName = capitalizeFirstLetter(passengers.rows[i].lastname);
+    passenger.bookingId = passengers.rows[i].bookingid;
+
+    response.push(passenger);
+  }
+  console.log(`Passengers on flight ${req.query.flightNumber}: ${JSON.stringify(response)}`);
+  res.send(response);
 });
 
 app.get("/passengers/:id", async (req, res, next) => {
-  let table = "passengers"
-  let query = `SELECT * FROM ${table} WHERE id = $1`;
+  let passengerInfo = {};
+  passengerInfo.flights = []
+  let query = `
+  SELECT 
+	  p.id, p.firstname, p.lastname, p.email,
+	  f.bookingId, f.flightnumber, f.departureairport, f.arrivalairport, f.departuredate, f.arrivaldate,
+    a2.name as "arrivalAirport"
+  FROM passengers p
+  LEFT JOIN flights f ON f.id = p."flightId"
+  LEFT JOIN airports a1 ON f.departureairport = a1.id
+  LEFT JOIN airports a2 on f.arrivalairport = a2.id
+  WHERE p.id = $1`;
+  
   let passenger = await getInfoById(query, req.params.id);
-  let fname = capitalizeFirstLetter(`${passenger.rows[0].firstname}`);
-  let lname = capitalizeFirstLetter(`${passenger.rows[0].lastname}`);
+  let passengerFlights = {}
 
-  console.log(`Fetched passenger ${fname} ${lname} 👤`);
+  passengerInfo.id = passenger.rows[0].id;
+  passengerInfo.firstName = capitalizeFirstLetter(`${passenger.rows[0].firstname}`);
+  passengerInfo.lastName = capitalizeFirstLetter(`${passenger.rows[0].lastname}`);
+  passengerInfo.email = passenger.rows[0].email;
+  passengerInfo.bookingId = passenger.rows[0].bookingid;
 
-  res.send(passenger.rows[0]);
-});
+  passengerFlights.flightNumber = passenger.rows[0].flightnumber;
+  passengerFlights.departureAirport = passenger.rows[0].departureAirport;
+  passengerFlights.arrivalAirport = passenger.rows[0].arrivalAirport;
+  passengerFlights.departureDate = passenger.rows[0].departuredate;
+  passengerFlights.arrivalDate = passenger.rows[0].arrivaldate;
 
-// bleh how
-app.get("/passengers?flightNumber=:flightNumber&departureDate=:departureDate>", async (req, res, next) => {
+  passengerInfo.flights.push(passengerFlights);
 
+  console.log(`Fetched passenger ${passengerInfo.firstName} ${passengerInfo.lastName} 👤`);
+  console.log(`Passenger Info ${JSON.stringify(passengerInfo)}`);
+
+  res.send(passengerInfo);
 });
 
 app.get("/flights", async (req, res, next) => {
@@ -98,34 +141,6 @@ function generateString(characters, length) {
    }
    return result;
 }
-
-// send url from postman
-app.post("/api", (req, res) => {
-  try {
-    // get postman params
-    let passInFlightNum = req.query.flightNumber;
-    let passInBookingId = req.query.bookingId;
-
-    gatherSiteInformation(passInUrl).then((result) => {
-      let values = [];
-
-      let insertQuery = "INSERT INTO table () values ($1, $2, $3, $4) RETURNING *";
-
-      client.query(insertQuery, values, (err, res) => {
-        if (err) {
-          console.log(err.stack);
-        } else {
-          console.log(res.rows[0]);
-        }
-      });
-
-      console.log("Done.");
-      res.send(values);
-    });
-  } catch (error) {
-    res.send({ error: error.toString() });
-  }
-});
 
 // const bookingID = generateString("ABCDEFGHIJKLMNOPQRSTUVWXYZ23456789", 6);
 // const flightNumber = `FIN${generateString("0123456789", 4)}`;
