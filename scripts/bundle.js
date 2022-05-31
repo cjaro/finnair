@@ -4,6 +4,7 @@ const author = child.execSync('git config --get user.email').toString().trim();
 const commits = child.execSync(`git log --author=${author}`).toString().trim();
 
 console.log("Commits by", author);
+console.log(commits);
 
 if (!commits) {
   console.error('This repo has no commits from the current git user. Did you commit your changes?');
@@ -11,5 +12,5 @@ if (!commits) {
 }
 
 const bundleName = "finnair-code-project";
-const result = child.execSync(`git bundle create ${bundleName}.bundle HEAD master`);
+const result = child.execSync(`git bundle create ${bundleName}.bundle HEAD main`);
 console.log(`${bundleName}.bundle has been created!`);
