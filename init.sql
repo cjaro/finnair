@@ -1,3 +1,5 @@
+SET statement_timeout TO 15000;
+
 CREATE TABLE passengers (
     id SERIAL PRIMARY KEY,
     firstname character varying(100),

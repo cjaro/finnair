@@ -10,7 +10,6 @@ let dbHost = process.env.POSTGRES_HOST;
 let dbName = process.env.POSTGRES_DB;
 let dbPass = process.env.POSTGRES_PASSWORD;
 let dbPort = process.env.POSTGRES_PORT;
-let timeout = 1500000;
 
 const app = express();
 
@@ -29,7 +28,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
-  res.send("Hello world! 🚀");
+  res.send("Terve ja tervetuloa! 🇫🇮 ✈️");
 });
 
 app.get("/passengers/", async (req, res, next) => {
