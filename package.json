@@ -1,0 +1,23 @@
+{
+  "name": "finnair-demo",
+  "version": "1.0.0",
+  "description": "Pre-assignment Developer 2",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+    },
+  "keywords": [
+    "finnair",
+    "typescript",
+    "npm"
+  ],
+  "author": "cjaro",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "nodemon": "^2.0.16",
+    "pg": "^8.7.3"
+  },
+  "type": "module"
+}

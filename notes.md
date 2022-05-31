@@ -1,0 +1,1 @@
+- Make sure `brew services list` shows that postgresql is stopped. If it's running on the machine instead of through docker, the db connection via docker won't work... obviously.
