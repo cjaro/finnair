@@ -35,13 +35,10 @@ app.get("/", (req, res) => {
 app.get("/passengers/", async (req, res, next) => {
   console.log(`Fetching passengers on flight ${req.query.flightNumber} 👥`);
 
-  let flightNum = req.query.flightNumber;
-
-  let query = `${process.env.PASSENGERS_QUERY} '${flightNum}';`
-
-  let passengers = await client.query(query);
-
   let response = []
+  let flightNum = req.query.flightNumber;
+  let query = `${process.env.PASSENGERS_QUERY} '${flightNum}';`
+  let passengers = await client.query(query);
 
   for (var i = 0; i < passengers.rows.length; i++) {
     const passenger = {};
@@ -51,8 +48,8 @@ app.get("/passengers/", async (req, res, next) => {
     passenger.bookingId = passengers.rows[i].bookingid;
     response.push(passenger);
   }
-  console.log(`Passengers on flight ${req.query.flightNumber}: ${JSON.stringify(response)}`);
-  res.send(`Passengers on flight ${req.query.flightNumber}: ${JSON.stringify(response)}`);
+  // res.send(`Passengers on flight ${req.query.flightNumber}: ${JSON.stringify(response)}`);
+  res.send(response);
 });
 
 app.get("/passengers/:id", async (req, res, next) => {

@@ -3,7 +3,7 @@ CREATE TABLE passengers (
     firstname character varying(100),
     lastname character varying(100),
     email character varying(100),
-    flightId integer REFERENCES flights(id)
+    flightid integer REFERENCES flights(id)
 );
 
 INSERT INTO passengers(firstname,lastname,email) 
