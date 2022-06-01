@@ -51,5 +51,3 @@ Response body:
 - A booking can have multiple flights, and a flight can have multiple bookings.
 - Do the assignment the way you would do it at work, but not everything has to be production-ready.
 - Use the programming language and framework you’re most familiar with.
-
----

@@ -33,6 +33,7 @@ app.get("/", (req, res) => {
 
 app.get("/passengers/", async (req, res, next) => {
   console.log(`Fetching passengers on flight ${req.query.flightNumber} 👥`);
+  // opportunity to validate flight number matches FIN####
 
   let response = []
   let flightNum = req.query.flightNumber;
@@ -65,7 +66,7 @@ app.get("/passengers/:id", async (req, res, next) => {
   passengerInfo.email = passenger.rows[0].email;
   passengerInfo.bookingId = passenger.rows[0].bookingid;
 
-  // if a passenger can have more than one flight, find a way to iterate and select multiple flights
+  // a passenger can have more than one flight, find a way to iterate and select multiple flights
   // does that require changing my tables?
   passengerFlights.flightNumber = passenger.rows[0].flightnumber;
   passengerFlights.departureAirport = passenger.rows[0].departureAirport;

@@ -1,22 +1,5 @@
 SET statement_timeout TO 15000;
 
-CREATE TABLE passengers (
-    id SERIAL PRIMARY KEY,
-    firstname character varying(100),
-    lastname character varying(100),
-    email character varying(100),
-    flightid integer REFERENCES flights(id)
-);
-
-INSERT INTO passengers(firstname,lastname,email) 
-VALUES 
-('catherine','jarocki','cjarocki@gmail.com'), 
-('landon','brodersen','lhbrodersen07@gmail.com'),
-('roosa','pollonen','roosa.pollonen@hotmail.com'),
-('pyry','koskinen','koskinen.pyry@tasteoffinnish.fi'),
-('aino','makinen','aino.makinen@aol.com'),
-('otso','hannola','otso@travelfinland.com');
-
 CREATE TABLE airports (
     id SERIAL PRIMARY KEY,
     name character varying(100),
@@ -43,4 +26,23 @@ CREATE TABLE flights (
 );
 
 INSERT INTO flights(flightNumber,departureAirport,arrivalAirport,departureDate,arrivalDate,bookingId) 
-VALUES ('FIN1035',2,3,'2022-07-04','2022-07-05','9O34RM');
+VALUES 
+('FIN1035',2,3,'2022-07-04','2022-07-05','9O34RM'),
+('FIN2946',1,2,'2022-08-07','2022-08-08','P4FG67');
+
+CREATE TABLE passengers (
+    id SERIAL PRIMARY KEY,
+    firstname character varying(100),
+    lastname character varying(100),
+    email character varying(100),
+    flightid integer REFERENCES flights(id)
+);
+
+INSERT INTO passengers(firstname,lastname,email,flightid) 
+VALUES 
+('catherine','jarocki','cjarocki@gmail.com',1), 
+('landon','brodersen','lhbrodersen07@gmail.com',1),
+('roosa','pollonen','roosa.pollonen@hotmail.com',1),
+('pyry','koskinen','koskinen.pyry@tasteoffinnish.fi',2),
+('aino','makinen','aino.makinen@aol.com',2),
+('otso','hannola','otso@travelfinland.com',2);
