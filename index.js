@@ -1,10 +1,10 @@
 import bodyParser from "body-parser";
 import express from "express";
 import PG from "pg";
+import favicon from "serve-favicon";
 import "dotenv/config";
 
 let PORT = process.env.PORT;
-
 let dbUser = process.env.POSTGRES_USER;
 let dbHost = process.env.POSTGRES_HOST;
 let dbName = process.env.POSTGRES_DB;
@@ -12,6 +12,8 @@ let dbPass = process.env.POSTGRES_PASSWORD;
 let dbPort = process.env.POSTGRES_PORT;
 
 const app = express();
+
+app.use(favicon('favicon.ico'));
 
 const client = new PG.Client({
   user: dbUser,
