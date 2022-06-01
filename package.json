@@ -6,11 +6,10 @@
   "scripts": {
     "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "bundle": "node scripts/bundle.js"
   },
   "keywords": [
     "finnair",
-    "typescript",
+    "javascript",
     "npm"
   ],
   "author": "cjaro",
